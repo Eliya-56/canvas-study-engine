@@ -1,13 +1,13 @@
 export default class Engine {
 
-    constructor(parentElement) {
+    constructor(parentElement, width = 1000, height = 750) {
         if(!(parentElement instanceof HTMLElement)) {
             throw "Bad parameter to engine. HTMLElement expected";
         }
 
         this.canvas = document.createElement("canvas");
-        this.canvas.height = 750;
-        this.canvas.width = 1000;
+        this.canvas.height = height;
+        this.canvas.width = width;
         parentElement.prepend(this.canvas);
         this.ctx = this.canvas.getContext("2d");
     }
