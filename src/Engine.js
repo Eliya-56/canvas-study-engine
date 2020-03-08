@@ -27,9 +27,10 @@ export default class Engine {
         this.ctx.restore();
     }
 
-    drawStrokeRectangle(x, y, width, height, color = "black") {
+    drawStrokeRectangle(x, y, width, height, color = "black", lineWidth = 1) {
         this.ctx.save();
-        this.ctx.strokeStyle = color;        
+        this.ctx.strokeStyle = color;
+        this.ctx.lineWidth = lineWidth;
         this.ctx.strokeRect(x, y, width, height);
         this.ctx.restore();
     }
@@ -38,7 +39,7 @@ export default class Engine {
         this.ctx.save();
         this.ctx.strokeStyle = color;        
         this.ctx.fillStyle = color;
-        this.ctx.strokeRect(x, y, width, height);
+        this.ctx.fillRect(x, y, width, height);
         this.ctx.restore();
     }
 
