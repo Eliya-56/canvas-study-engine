@@ -1,8 +1,8 @@
 const config = {
-    fieldWidth: 20,
+    fieldWidth: 30,
     fieldInterval: 3,
-    rowCount: 30,
-    columnCount: 40,
+    rowCount: 20,
+    columnCount: 25,
     fieldBackgroundColor: "white",
     fieldBorderColor: "gray",
     fieldDefaultContentColor: "gray",
