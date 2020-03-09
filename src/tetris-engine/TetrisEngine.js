@@ -1,5 +1,6 @@
 import config from "./config"
 import Engine from "../Engine";
+import FieldState from "./FieldState";
 
 export default class TetrisEngine {
 
@@ -34,7 +35,7 @@ export default class TetrisEngine {
         for (let i = 0; i < this.rowCount; i++) {
             this.fields[i] = new Array(this.columnCount);
             for (let j = 0; j < this.columnCount; j++) {
-                this.fields[i][j] = false;
+                this.fields[i][j] = new FieldState(false, false);
             }
         }
     }
@@ -42,11 +43,14 @@ export default class TetrisEngine {
     _buildFields() {
         for (let i = 0; i < this.rowCount; i++) {
             for (let j = 0; j < this.columnCount; j++) {
-                if (this.fields[i][j]) {
+                if (this.fields[i][j].turnState) {
                     this.turnOnField(i, j);
                 }
                 else {
                     this.turnOffField(i, j);
+                }
+                if (this.fields[i][j].isHighlighted) {
+                    this.highlightField(i, j);
                 }
             }
         }
@@ -105,10 +109,11 @@ export default class TetrisEngine {
         }
 
         let borderColor = this._useBorders ? config.fieldBorderColor : config.fieldBackgroundColor;
+        let lineWidth = this.fields[x][y].isHighlighted ? config.fullLineWidth : config.defaultLineWidth;
 
         this._clearFieldBeforeDraw(x, y);
-        this._drawField(x, y, borderColor, config.fieldDefaultContentColor);
-        this.fields[x][y] = true;
+        this._drawField(x, y, borderColor, config.fieldDefaultContentColor, lineWidth);
+        this.fields[x][y].turnState = true;
     }
 
     turnOffField(x, y) {
@@ -117,17 +122,36 @@ export default class TetrisEngine {
         }
 
         let borderColor = this._useBorders ? config.fieldBorderColor : config.fieldBackgroundColor;
+        let lineWidth = this.fields[x][y].isHighlighted ? config.fullLineWidth : config.defaultLineWidth;
+ 
         this._clearFieldBeforeDraw(x, y);
-        this._drawField(x, y, borderColor, config.fieldBackgroundColor);
-        this.fields[x][y] = false;
+        this._drawField(x, y, borderColor, config.fieldBackgroundColor, lineWidth);
+        this.fields[x][y].turnState = false;
     }
 
-    highLightField(x, y) {
+    highlightField(x, y) {
         if (!this._isValidCoordinates(x, y)) {
             throw `Cordinates out of range. Range is from 30 x 40, but x:${x} y:${y} was givven`;
         }
 
+        let borderColor = this._useBorders ? config.fieldBorderColor : config.fieldBackgroundColor;
+        let contentColor = this.fields[x][y].turnState ? config.fieldDefaultContentColor : config.fieldBackgroundColor;
+
         this._clearFieldBeforeDraw(x, y);
-        this._drawField(x, y, config.fieldBorderColor, config.fieldBackgroundColor, config.fullLineWidth);
+        this._drawField(x, y, borderColor, contentColor, config.fullLineWidth);
+        this.fields[x][y].isHighlighted = true;
+    }
+
+    removeHighlight(x, y) {
+        if (!this._isValidCoordinates(x, y)) {
+            throw `Cordinates out of range. Range is from 30 x 40, but x:${x} y:${y} was givven`;
+        }
+
+        let borderColor = this._useBorders ? config.fieldBorderColor : config.fieldBackgroundColor;
+        let contentColor = this.fields[x][y].turnState ? config.fieldDefaultContentColor : config.fieldBackgroundColor;
+
+        this._clearFieldBeforeDraw(x, y);
+        this._drawField(x, y, borderColor, contentColor, config.defaultLineWidth);
+        this.fields[x][y].isHighlighted = false;
     }
 }
