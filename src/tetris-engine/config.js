@@ -8,6 +8,7 @@ const config = {
     fieldDefaultContentColor: "gray",
     defaultLineWidth: 0.5,
     fullLineWidth: 1,
+    defaultUseBorders: true
 }
 
 Object.freeze(config);

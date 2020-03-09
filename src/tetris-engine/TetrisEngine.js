@@ -10,7 +10,10 @@ export default class TetrisEngine {
             config.fieldWidth * config.columnCount + config.columnCount * config.fieldInterval + config.fieldInterval
         );
 
+        this._useBorders = config.defaultUseBorders;
+
         this._defineSizes();
+        this._initFields();
         this._buildFields();
     }
 
@@ -25,17 +28,26 @@ export default class TetrisEngine {
         });
     }
 
-    _buildFields() {
+    _initFields() {
         // Init fields state
         this.fields = new Array(this.rowCount);
         for (let i = 0; i < this.rowCount; i++) {
             this.fields[i] = new Array(this.columnCount);
+            for (let j = 0; j < this.columnCount; j++) {
+                this.fields[i][j] = false;
+            }
         }
-        
+    }
+
+    _buildFields() {
         for (let i = 0; i < this.rowCount; i++) {
             for (let j = 0; j < this.columnCount; j++) {
-                this.turnOffField(i, j);
-                this.fields[i][j] = false;
+                if (this.fields[i][j]) {
+                    this.turnOnField(i, j);
+                }
+                else {
+                    this.turnOffField(i, j);
+                }
             }
         }
     }
@@ -78,13 +90,24 @@ export default class TetrisEngine {
         this._drawField(x, y, config.fieldBackgroundColor, config.fieldBackgroundColor);
     }
 
+    set useBorders(value) {
+        if (!(typeof value === "boolean")) {
+            console.error(`Value must be boolean. ${value} was given`);
+            return;
+        }
+        this._useBorders = value;
+        this._buildFields();
+    }
+
     turnOnField(x, y) {
         if (!this._isValidCoordinates(x, y)) {
             throw `Cordinates out of range. Range is from 30 x 40, but x:${x} y:${y} was givven`;
         }
 
+        let borderColor = this._useBorders ? config.fieldBorderColor : config.fieldBackgroundColor;
+
         this._clearFieldBeforeDraw(x, y);
-        this._drawField(x, y, config.fieldBorderColor, config.fieldDefaultContentColor);
+        this._drawField(x, y, borderColor, config.fieldDefaultContentColor);
         this.fields[x][y] = true;
     }
 
@@ -93,8 +116,9 @@ export default class TetrisEngine {
             throw `Cordinates out of range. Range is from 30 x 40, but x:${x} y:${y} was givven`;
         }
 
+        let borderColor = this._useBorders ? config.fieldBorderColor : config.fieldBackgroundColor;
         this._clearFieldBeforeDraw(x, y);
-        this._drawField(x, y, config.fieldBorderColor, config.fieldBackgroundColor);
+        this._drawField(x, y, borderColor, config.fieldBackgroundColor);
         this.fields[x][y] = false;
     }
 
