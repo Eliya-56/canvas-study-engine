@@ -2,12 +2,11 @@ const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
-    mode: 'development',
+    mode: 'production',
     entry: './src/index.js',
     plugins: [
         new CleanWebpackPlugin(),
     ],
-    devtool: 'inline-source-map',
     output: {
         filename: 'index.js',
         path: path.resolve(__dirname, 'dist'),
