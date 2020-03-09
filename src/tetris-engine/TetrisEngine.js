@@ -7,14 +7,22 @@ export default class TetrisEngine {
     constructor(parentElement) {
         this.engine = new Engine(
             parentElement,
-            config.fieldWidth * config.rowCount + config.rowCount * config.fieldInterval + config.fieldInterval,
-            config.fieldWidth * config.columnCount + config.columnCount * config.fieldInterval + config.fieldInterval
+            config.fieldWidth * config.rowCount
+            + config.rowCount * config.fieldInterval
+            + config.fieldInterval
+            + 2 * config.mainBorderWidth,
+            config.fieldWidth * config.columnCount
+            + config.columnCount * config.fieldInterval
+            + config.fieldInterval
+            + config.headerHeight
+            + 2 * config.mainBorderWidth
         );
 
         this._useBorders = config.defaultUseBorders;
 
         this._defineSizes();
         this._initFields();
+        this._drawMainBorder();
         this._buildFields();
     }
 
@@ -38,6 +46,17 @@ export default class TetrisEngine {
                 this.fields[i][j] = new FieldState(false, false);
             }
         }
+    }
+
+    _drawMainBorder() {
+        this.engine.drawStrokeRectangle(
+            0,
+            0,
+            this.engine.canvas.width,
+            this.engine.canvas.height,
+            config.fieldBorderColor,
+            config.mainBorderWidth
+        )
     }
 
     _buildFields() {
@@ -70,8 +89,8 @@ export default class TetrisEngine {
 
     _drawField(x, y, borderColor, contentColor, lineWidth = config.defaultLineWidth) {
         this.engine.drawFillRectangle(
-            x * (config.fieldWidth + config.fieldInterval) + config.fieldInterval,
-            y * (config.fieldWidth + config.fieldInterval) + config.fieldInterval,
+            x * (config.fieldWidth + config.fieldInterval) + config.fieldInterval + config.mainBorderWidth,
+            y * (config.fieldWidth + config.fieldInterval) + config.fieldInterval + config.headerHeight + config.mainBorderWidth,
             config.fieldWidth,
             config.fieldWidth,
             contentColor,
@@ -81,8 +100,8 @@ export default class TetrisEngine {
         // Width of border line isn't included in rect
         // Shift start point by lineWidth value and reduce rect width and heigh for 2 * lineWidth beacuse of first shift
         this.engine.drawStrokeRectangle(
-            x * (config.fieldWidth + config.fieldInterval) + config.fieldInterval + lineWidth,
-            y * (config.fieldWidth + config.fieldInterval) + config.fieldInterval + lineWidth,
+            x * (config.fieldWidth + config.fieldInterval) + config.fieldInterval + lineWidth + config.mainBorderWidth,
+            y * (config.fieldWidth + config.fieldInterval) + config.fieldInterval + lineWidth + config.headerHeight + config.mainBorderWidth,
             config.fieldWidth - 2 * lineWidth,
             config.fieldWidth - 2 * lineWidth,
             borderColor,
@@ -123,7 +142,7 @@ export default class TetrisEngine {
 
         let borderColor = this._useBorders ? config.fieldBorderColor : config.fieldBackgroundColor;
         let lineWidth = this.fields[x][y].isHighlighted ? config.fullLineWidth : config.defaultLineWidth;
- 
+
         this._clearFieldBeforeDraw(x, y);
         this._drawField(x, y, borderColor, config.fieldBackgroundColor, lineWidth);
         this.fields[x][y].turnState = false;
@@ -153,5 +172,25 @@ export default class TetrisEngine {
         this._clearFieldBeforeDraw(x, y);
         this._drawField(x, y, borderColor, contentColor, config.defaultLineWidth);
         this.fields[x][y].isHighlighted = false;
+    }
+
+    _clearHeader() {
+        this.engine.drawFillRectangle(
+            config.mainBorderWidth,
+            config.mainBorderWidth,
+            this.engine.canvas.width - 2 * config.mainBorderWidth,
+            config.headerHeight,
+            config.fieldBackgroundColor
+        );
+    }
+
+    setHeaderText(text) {
+        this._clearHeader();
+        this.engine.putText(
+            text,
+            config.headerMargin,
+            config.headerMargin + 45,
+            config.headerHeight - 2 * config.headerMargin
+        );
     }
 }

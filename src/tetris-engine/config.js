@@ -1,4 +1,5 @@
 const config = {
+    mainBorderWidth: 1,
     fieldWidth: 30,
     fieldInterval: 3,
     rowCount: 20,
@@ -8,7 +9,9 @@ const config = {
     fieldDefaultContentColor: "gray",
     defaultLineWidth: 0.5,
     fullLineWidth: 1,
-    defaultUseBorders: true
+    defaultUseBorders: true,
+    headerHeight: 80,
+    headerMargin: 15
 }
 
 Object.freeze(config);
