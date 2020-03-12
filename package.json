@@ -1,6 +1,6 @@
 {
   "name": "@eliya-56/canvas-engine",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Simple 2D graphic engine for study proposed, that uses canvas API",
   "main": "dist/index.js",
   "scripts": {
