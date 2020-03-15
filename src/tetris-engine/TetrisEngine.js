@@ -4,15 +4,15 @@ import FieldState from "./FieldState";
 
 export default class TetrisEngine {
 
-    constructor(parentElement) {
+    constructor(parentElement, rowCount = config.rowCount, columnCount = config.columnCount) {
         this.engine = new Engine(
             parentElement,
-            config.fieldWidth * config.rowCount
-            + config.rowCount * config.fieldInterval
+            config.fieldWidth * rowCount
+            + rowCount * config.fieldInterval
             + config.fieldInterval
             + 2 * config.mainBorderWidth,
-            config.fieldWidth * config.columnCount
-            + config.columnCount * config.fieldInterval
+            config.fieldWidth * columnCount
+            + columnCount * config.fieldInterval
             + config.fieldInterval
             + config.headerHeight
             + 2 * config.mainBorderWidth
@@ -20,19 +20,19 @@ export default class TetrisEngine {
 
         this._useBorders = config.defaultUseBorders;
 
-        this._defineSizes();
+        this._defineSizes(rowCount, columnCount);
         this._initFields();
         this._drawMainBorder();
         this._buildFields();
     }
 
-    _defineSizes() {
+    _defineSizes(rowCount, columnCount) {
         Object.defineProperty(this, "rowCount", {
-            value: config.rowCount,
+            value: rowCount,
             enumerable: true
         });
         Object.defineProperty(this, "columnCount", {
-            value: config.columnCount,
+            value: columnCount,
             enumerable: true
         });
     }
