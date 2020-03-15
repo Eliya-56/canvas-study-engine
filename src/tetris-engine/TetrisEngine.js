@@ -24,6 +24,23 @@ export default class TetrisEngine {
         this._initFields();
         this._drawMainBorder();
         this._buildFields();
+        this._startListenKeyboard(parentElement);
+    }
+
+    _startListenKeyboard(parentElement) {
+        parentElement.addEventListener('keydown', this._keyboardHandler.bind(this));
+    }
+
+    _keyboardHandler(event) {
+        if (typeof (this._keyboardCustomHandler) === "function") {
+            event.preventDefault();
+            this._keyboardCustomHandler(
+                {
+                    keyCode: event.keyCode,
+                    key: event.key
+                }
+            );
+        }
     }
 
     _defineSizes(rowCount, columnCount) {
@@ -120,6 +137,10 @@ export default class TetrisEngine {
         }
         this._useBorders = value;
         this._buildFields();
+    }
+
+    set keyboardHandler(value) {
+        this._keyboardCustomHandler = value;
     }
 
     turnOnField(x, y) {
