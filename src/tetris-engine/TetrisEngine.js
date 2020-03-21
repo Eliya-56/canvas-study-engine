@@ -20,7 +20,7 @@ export default class TetrisEngine {
 
         this._useBorders = config.defaultUseBorders;
 
-        this._defineSizes(columnCount, rowCount);
+        this._defineSizes(rowCount, columnCount);
         this._initFields();
         this._drawMainBorder();
         this._buildFields();
