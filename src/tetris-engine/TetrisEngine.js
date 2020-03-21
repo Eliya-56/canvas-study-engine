@@ -145,7 +145,7 @@ export default class TetrisEngine {
 
     turnOnField(x, y) {
         if (!this._isValidCoordinates(x, y)) {
-            throw `Cordinates out of range. Range is from 30 x 40, but x:${x} y:${y} was givven`;
+            throw `Cordinates out of range. Range is from ${this._rowCount} x ${this._columnCount}, but x:${x} y:${y} was givven`;
         }
 
         let borderColor = this._useBorders ? config.fieldBorderColor : config.fieldBackgroundColor;
