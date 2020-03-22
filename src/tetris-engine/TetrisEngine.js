@@ -77,8 +77,8 @@ export default class TetrisEngine {
     }
 
     _buildFields() {
-        for (let i = 0; i < this.rowCount; i++) {
-            for (let j = 0; j < this.columnCount; j++) {
+        for (let i = 0; i < this.columnCount; i++) {
+            for (let j = 0; j < this.rowCount; j++) {
                 if (this.fields[i][j].turnState) {
                     this.turnOnField(i, j);
                 }
