@@ -14,5 +14,4 @@ const config = {
     headerMargin: 15
 }
 
-Object.freeze(config);
 export default config;

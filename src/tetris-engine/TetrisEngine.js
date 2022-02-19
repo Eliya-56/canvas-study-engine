@@ -4,15 +4,18 @@ import FieldState from "./FieldState";
 
 export default class TetrisEngine {
 
-    constructor(parentElement, columnCount = config.columnCount, rowCount = config.rowCount) {
+    constructor(parentElement, customConfig = config) {
+
+        this._initConfig(customConfig);
+
         this.engine = new Engine(
             parentElement,
-            config.fieldWidth * columnCount
-            + columnCount * config.fieldInterval
+            config.fieldWidth * config.columnCount
+            + config.columnCount * config.fieldInterval
             + config.fieldInterval
             + 2 * config.mainBorderWidth,
-            config.fieldWidth * rowCount
-            + rowCount * config.fieldInterval
+            config.fieldWidth * config.rowCount
+            + config.rowCount * config.fieldInterval
             + config.fieldInterval
             + config.headerHeight
             + 2 * config.mainBorderWidth
@@ -20,11 +23,59 @@ export default class TetrisEngine {
 
         this._useBorders = config.defaultUseBorders;
 
-        this._defineSizes(rowCount, columnCount);
+        this._defineSizes(config.rowCount, config.columnCount);
         this._initFields();
         this._drawMainBorder();
         this._buildFields();
         this._startListenKeyboard(parentElement);
+    }
+
+    _initConfig(customConfig) {
+        if (customConfig === config) {
+            return;
+        }
+
+        if(customConfig.hasOwnProperty("columnCount")) {
+            config.columnCount = customConfig.columnCount;
+        }
+        if(customConfig.hasOwnProperty("rowCount")) {
+            config.rowCount = customConfig.rowCount;
+        }
+        if(customConfig.hasOwnProperty("mainBorderWidth")) {
+            config.mainBorderWidth = customConfig.mainBorderWidth;
+        }
+        if(customConfig.hasOwnProperty("fieldWidth")) {
+            config.fieldWidth = customConfig.fieldWidth;
+        }
+        if(customConfig.hasOwnProperty("fieldInterval")) {
+            config.fieldInterval = customConfig.fieldInterval;
+        }
+        if(customConfig.hasOwnProperty("fieldBackgroundColor")) {
+            config.fieldBackgroundColor = customConfig.fieldBackgroundColor;
+        }
+        if(customConfig.hasOwnProperty("fieldBorderColor")) {
+            config.fieldBorderColor = customConfig.fieldBorderColor;
+        }
+        if(customConfig.hasOwnProperty("fieldDefaultContentColor")) {
+            config.fieldDefaultContentColor = customConfig.fieldDefaultContentColor;
+        }
+        if(customConfig.hasOwnProperty("defaultLineWidth")) {
+            config.defaultLineWidth = customConfig.defaultLineWidth;
+        }
+        if(customConfig.hasOwnProperty("fullLineWidth")) {
+            config.fullLineWidth = customConfig.fullLineWidth;
+        }
+        if(customConfig.hasOwnProperty("defaultUseBorders")) {
+            config.defaultUseBorders = customConfig.defaultUseBorders;
+        }
+        if(customConfig.hasOwnProperty("headerHeight")) {
+            config.headerHeight = customConfig.headerHeight;
+        }
+        if(customConfig.hasOwnProperty("headerMargin")) {
+            config.headerMargin = customConfig.headerMargin;
+        }
+
+        return customConfig;
     }
 
     _startListenKeyboard(parentElement) {
@@ -79,7 +130,7 @@ export default class TetrisEngine {
     _buildFields() {
         for (let i = 0; i < this.columnCount; i++) {
             for (let j = 0; j < this.rowCount; j++) {
-                this.switchField(i,j);
+                this.switchField(i, j);
             }
         }
     }
@@ -139,7 +190,7 @@ export default class TetrisEngine {
         if (!this._isValidCoordinates(x, y)) {
             throw `Cordinates out of range. Range is from ${this._rowCount} x ${this._columnCount}, but x:${x} y:${y} was given`;
         }
-        
+
         if (this.fields[x][y].turnState) {
             this.turnOnField(x, y);
         }
