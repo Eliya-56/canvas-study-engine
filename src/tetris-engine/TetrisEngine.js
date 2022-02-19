@@ -56,10 +56,10 @@ export default class TetrisEngine {
 
     _initFields() {
         // Init fields state
-        this.fields = new Array(this.rowCount);
-        for (let i = 0; i < this.rowCount; i++) {
-            this.fields[i] = new Array(this.columnCount);
-            for (let j = 0; j < this.columnCount; j++) {
+        this.fields = new Array(this.columnCount);
+        for (let i = 0; i < this.columnCount; i++) {
+            this.fields[i] = new Array(this.rowCount);
+            for (let j = 0; j < this.rowCount; j++) {
                 this.fields[i][j] = new FieldState(false, false);
             }
         }
@@ -79,25 +79,17 @@ export default class TetrisEngine {
     _buildFields() {
         for (let i = 0; i < this.columnCount; i++) {
             for (let j = 0; j < this.rowCount; j++) {
-                if (this.fields[i][j].turnState) {
-                    this.turnOnField(i, j);
-                }
-                else {
-                    this.turnOffField(i, j);
-                }
-                if (this.fields[i][j].isHighlighted) {
-                    this.highlightField(i, j);
-                }
+                this.switchField(i,j);
             }
         }
     }
 
     _isValidCoordinates(x, y) {
-        if (x < 0 || x > this.rowCount - 1) {
+        if (x < 0 || x > this.columnCount - 1) {
             return false;
         }
 
-        if (y < 0 || y > this.columnCount - 1) {
+        if (y < 0 || y > this.rowCount - 1) {
             return false;
         }
 
@@ -143,9 +135,25 @@ export default class TetrisEngine {
         this._keyboardCustomHandler = value;
     }
 
+    switchField(x, y) {
+        if (!this._isValidCoordinates(x, y)) {
+            throw `Cordinates out of range. Range is from ${this._rowCount} x ${this._columnCount}, but x:${x} y:${y} was given`;
+        }
+        
+        if (this.fields[x][y].turnState) {
+            this.turnOnField(x, y);
+        }
+        else {
+            this.turnOffField(x, y);
+        }
+        if (this.fields[x][y].isHighlighted) {
+            this.highlightField(x, y);
+        }
+    }
+
     turnOnField(x, y) {
         if (!this._isValidCoordinates(x, y)) {
-            throw `Cordinates out of range. Range is from ${this._rowCount} x ${this._columnCount}, but x:${x} y:${y} was givven`;
+            throw `Cordinates out of range. Range is from ${this._rowCount} x ${this._columnCount}, but x:${x} y:${y} was given`;
         }
 
         let borderColor = this._useBorders ? config.fieldBorderColor : config.fieldBackgroundColor;
@@ -158,7 +166,7 @@ export default class TetrisEngine {
 
     turnOffField(x, y) {
         if (!this._isValidCoordinates(x, y)) {
-            throw `Cordinates out of range. Range is from 30 x 40, but x:${x} y:${y} was givven`;
+            throw `Cordinates out of range. Range is from 30 x 40, but x:${x} y:${y} was given`;
         }
 
         let borderColor = this._useBorders ? config.fieldBorderColor : config.fieldBackgroundColor;
@@ -171,7 +179,7 @@ export default class TetrisEngine {
 
     highlightField(x, y) {
         if (!this._isValidCoordinates(x, y)) {
-            throw `Cordinates out of range. Range is from 30 x 40, but x:${x} y:${y} was givven`;
+            throw `Cordinates out of range. Range is from 30 x 40, but x:${x} y:${y} was given`;
         }
 
         let borderColor = this._useBorders ? config.fieldBorderColor : config.fieldBackgroundColor;
@@ -184,7 +192,7 @@ export default class TetrisEngine {
 
     removeHighlight(x, y) {
         if (!this._isValidCoordinates(x, y)) {
-            throw `Cordinates out of range. Range is from 30 x 40, but x:${x} y:${y} was givven`;
+            throw `Cordinates out of range. Range is from 30 x 40, but x:${x} y:${y} was given`;
         }
 
         let borderColor = this._useBorders ? config.fieldBorderColor : config.fieldBackgroundColor;
