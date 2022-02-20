@@ -273,4 +273,12 @@ export default class TetrisEngine {
             config.headerHeight - 2 * config.headerMargin
         );
     }
+
+    get rowCount() {
+        return config.rowCount;
+    }
+
+    get columnCount() {
+        return config.columnCount;
+    }
 }
