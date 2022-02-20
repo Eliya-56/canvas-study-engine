@@ -7,6 +7,7 @@ const config = {
     fieldBackgroundColor: "white",
     fieldBorderColor: "gray",
     fieldDefaultContentColor: "gray",
+    highlightColor: "red",
     defaultLineWidth: 0.5,
     fullLineWidth: 1,
     defaultUseBorders: true,
