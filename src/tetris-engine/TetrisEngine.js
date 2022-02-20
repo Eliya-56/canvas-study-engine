@@ -75,7 +75,7 @@ export default class TetrisEngine {
             config.headerMargin = customConfig.headerMargin;
         }
 
-        return customConfig;
+        Object.freeze(config);
     }
 
     _startListenKeyboard(parentElement) {
@@ -228,12 +228,12 @@ export default class TetrisEngine {
         this.fields[x][y].turnState = false;
     }
 
-    highlightField(x, y) {
+    highlightField(x, y, color = null) {
         if (!this._isValidCoordinates(x, y)) {
             throw `Cordinates out of range. Range is from 30 x 40, but x:${x} y:${y} was given`;
         }
 
-        let borderColor = this._useBorders ? config.fieldBorderColor : config.fieldBackgroundColor;
+        let borderColor = color ? color : config.highlightColor;
         let contentColor = this.fields[x][y].turnState ? config.fieldDefaultContentColor : config.fieldBackgroundColor;
 
         this._clearFieldBeforeDraw(x, y);
@@ -280,5 +280,9 @@ export default class TetrisEngine {
 
     get columnCount() {
         return config.columnCount;
+    }
+
+    get config() {
+        return config;
     }
 }
