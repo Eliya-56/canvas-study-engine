@@ -129,8 +129,8 @@ export default class TetrisEngine {
 
     _buildFields() {
         for (let i = 0; i < this.columnCount; i++) {
-            for (let j = 0; j < this.rowCount; j++) {
-                this.switchField(i, j);
+            for (let j = 0; j < this.rowCount; j++) {                
+                this.turnOffField(i, j);
             }
         }
     }
@@ -191,7 +191,7 @@ export default class TetrisEngine {
             throw `Cordinates out of range. Range is from ${this._rowCount} x ${this._columnCount}, but x:${x} y:${y} was given`;
         }
 
-        if (this.fields[x][y].turnState) {
+        if (!this.fields[x][y].turnState) {
             this.turnOnField(x, y);
         }
         else {
