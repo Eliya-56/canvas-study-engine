@@ -11,6 +11,18 @@ Constructor takes 2 argumets :
 
 `fps` (optional) - desired number of frames per second number. That means that real fps won't be more than specified here. Default value is 30.
 
+To start cycle call `Start()` function of `GameCycle`, to stop call `Stop()` function.
+
+Example
+```js
+let game = {
+    render: () => console.log('Render function')
+};
+
+let gameCycle = new GameCycle(game).
+gameCycle.Start();
+```
+
 ## TetrisEngine
 `TetrisEngine` class draw tetris field and gives method to manage it. 
 
