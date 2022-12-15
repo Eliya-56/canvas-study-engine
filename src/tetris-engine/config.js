@@ -3,7 +3,7 @@ const config = {
     fieldWidth: 30,
     fieldInterval: 3,
     columnCount: 20,
-    rowCount: 25,
+    rowCount: 20,
     fieldBackgroundColor: "white",
     fieldBorderColor: "gray",
     fieldDefaultContentColor: "gray",
